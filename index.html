@@ -1126,9 +1126,6 @@ function aboutH(){
 var s=state.shop,a=s.hero||heroPic(),b=s.menuImg||a,c=s.phoneImg||b,sc=shopCats(),cp=sc.map(catPic).filter(Boolean);
 var d=cp[2]||cp[0]||c,city=String(s.city||'Basée à Tanger').replace(/^Basée à /i,'');
 var h='<section class="ab-hero">'+img(a,'',{eager:1})+'<div class="ab-ttl"><p class="eyebrow">La Maison</p><h1>'+esc(nm())+'</h1></div></section>';
-h+='<section class="sec"><div class="story rv"><p class="eyebrow">L’histoire</p><h2 class="h2">Née en <em>Belgique</em></h2><p class="lead">Miss Wita est née d’une belle idée, qui a germé en Belgique, où je vivais. Je suis venue m’installer au Maroc, à Tanger plus précisément, pour embellir la mode ici.</p></div></section>';
-h+='<section class="sec">';
-h+='<div class="more rv"><a class="b-ink" href="#shop">Découvrir la collection</a><a class="link" href="'+esc(chatHref())+'" target="_blank" rel="noopener" style="margin-top:12px">Écrire à la Maison</a></div></section>';
 return h}
 
 function helpH(){var s=state.shop;
