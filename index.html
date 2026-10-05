@@ -326,6 +326,7 @@ body[data-page="product"] .wa-fab{display:none}
 .ab-ttl h1{font:400 clamp(48px,8vw,104px)/.95 var(--serif);letter-spacing:-.02em;margin:0}
 @media (min-width:1024px){.ab-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:minmax(0,1fr);height:min(84vh,860px);background:var(--ivory);color:var(--ink)}.ab-hero::after{display:none}.ab-hero img{position:relative;grid-column:2;grid-row:1;height:100%}.ab-ttl{position:relative;left:auto;right:auto;bottom:auto;grid-column:1;grid-row:1;align-self:end;padding:0 var(--gut) clamp(48px,8vh,96px)}.ab-ttl .eyebrow{color:var(--muted)}}
 .ab-quote{font:400 clamp(26px,3.4vw,46px)/1.25 var(--serif);text-align:center;max-width:22em;margin:0 auto;text-wrap:balance;letter-spacing:-.01em}
+.story{display:grid;gap:20px;max-width:560px;margin:0 auto;text-align:center;justify-items:center}
 .chap{display:grid;gap:32px;align-items:center}
 .chap figure{margin:0;aspect-ratio:4/5;overflow:hidden;background:var(--ph)}
 .chap figure img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
@@ -1125,14 +1126,8 @@ function aboutH(){
 var s=state.shop,a=s.hero||heroPic(),b=s.menuImg||a,c=s.phoneImg||b,sc=shopCats(),cp=sc.map(catPic).filter(Boolean);
 var d=cp[2]||cp[0]||c,city=String(s.city||'Basée à Tanger').replace(/^Basée à /i,'');
 var h='<section class="ab-hero">'+img(a,'',{eager:1})+'<div class="ab-ttl"><p class="eyebrow">La Maison</p><h1>'+esc(nm())+'</h1></div></section>';
-h+='<section class="sec"><p class="ab-quote rv">Une garde-robe se construit lentement, <em>pièce après pièce.</em> Chez '+esc(nm())+', chacune est choisie pour durer.</p></section>';
-function chap(n,eb,t,p,im,rev){return '<section class="sec"><div class="chap'+(rev?' rev':'')+'"><figure class="rv">'+img(im,'')+'</figure><div class="chap-t rv"><span class="chap-n">'+n+'</span><p class="eyebrow">'+eb+'</p><h2 class="h2">'+t+'</h2><p class="lead">'+p+'</p></div></div></section>'}
-h+=chap('I.','L’histoire','Née à <em>'+esc(city)+'</em>','Miss Wita est née d’une envie simple : partager les pièces que l’on aurait aimé trouver soi-même. Une boutique en ligne pensée comme un dressing confidentiel, où chaque vêtement a été regardé, touché, choisi.',b,false);
-h+=chap('II.','La vision','L’élégance, <em>sans effort</em>','Proposer une élégance naturelle et accessible. Des pièces qui accompagnent le quotidien comme les moments qui comptent, loin des tendances éphémères.',c,true);
-h+=chap('III.','L’univers','Douceur & <em>caractère</em>','Des tons poudrés — ivoire, beige, taupe —, des mailles généreuses, des accessoires signature. Un vestiaire féminin et contemporain, où chaque pièce se marie facilement aux autres.',d,false);
-h+='<section class="sec"><div class="sh c rv"><div><p class="eyebrow">Nos valeurs</p><h2 class="h2">Ce qui nous <em>guide</em></h2></div></div><div class="vals"><div class="rv"><h3>Une sélection exigeante</h3><p>Chaque pièce est choisie pour sa matière, sa coupe et sa finition. Nous préférons proposer moins, mais mieux.</p></div><div class="rv"><h3>Des quantités limitées</h3><p>La plupart de nos modèles existent en très peu d’exemplaires. Une manière de porter des pièces que l’on ne croise pas partout.</p></div><div class="rv"><h3>Une relation personnelle</h3><p>Derrière chaque commande, une vraie conversation. Nous vous conseillons sur WhatsApp, avant comme après votre achat.</p></div></div></section>';
-h+='<section class="sec"><div class="sh c rv"><div><p class="eyebrow">La sélection des pièces</p><h2 class="h2">Regardées, touchées, <em>choisies</em></h2></div></div><p class="lead c rv">Nous sélectionnons chaque arrivage avec soin, puis nous photographions chaque pièce telle qu’elle est, pour que vous sachiez exactement ce que vous recevez.</p>';
-if(cp.length>=3)h+='<div class="trio rv">'+sc.slice(0,3).map(function(c){return '<a href="#shop/'+encodeURIComponent(c)+'" aria-label="'+esc(plur(c))+'">'+img(catPic(c),plur(c))+'</a>'}).join('')+'</div>';
+h+='<section class="sec"><div class="story rv"><p class="eyebrow">L’histoire</p><h2 class="h2">Née en <em>Belgique</em></h2><p class="lead">Miss Wita est née d’une belle idée, qui a germé en Belgique, où je vivais. Je suis venue m’installer au Maroc, à Tanger plus précisément, pour embellir la mode ici.</p></div></section>';
+h+='<section class="sec">';
 h+='<div class="more rv"><a class="b-ink" href="#shop">Découvrir la collection</a><a class="link" href="'+esc(chatHref())+'" target="_blank" rel="noopener" style="margin-top:12px">Écrire à la Maison</a></div></section>';
 return h}
 
