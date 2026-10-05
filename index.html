@@ -1014,7 +1014,7 @@ var h='<footer class="ftr"><div class="ftr-news rv"><p class="eyebrow">Newslette
 h+='<div class="ftr-cols"><div class="ftr-brand"><a class="brand" href="#"><img src="'+logoSrc()+'" alt="'+esc(nm())+'"></a><p>'+esc(s.city||'')+(s.city&&s.ship?'<br>':'')+esc(s.ship||'')+'</p><div class="ftr-soc">'+(g?'<a class="ico" href="'+esc(igUrl())+'" target="_blank" rel="noopener" aria-label="Instagram">'+I.ig+'</a>':'')+'<a class="ico" href="'+esc(chatHref())+'" target="_blank" rel="noopener" aria-label="WhatsApp">'+WA_ICON+'</a></div></div>';
 h+=col('Shop',[['#nouveautes','Nouveautés'],['#shop','Collections']].concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})));
 h+=col('Maison',[['#maison','À propos'],[chatHref(),'Contact',1],g?[igUrl(),'Instagram',1]:null,['#favoris','Favoris']]);
-h+=col('Aide',[['#aide/livraison','Livraison'],['#aide/retours','Retours & échanges'],['#aide/faq','FAQ'],['#aide/tailles','Guide des tailles']]);
+h+=col('Aide',[['#aide/livraison','Livraison'],['#aide/retours','Retours & échanges'],['#aide/faq','FAQ']]);
 h+='</div><div class="ftr-bottom"><span>© '+new Date().getFullYear()+' '+esc(nm())+(s.city?' · '+esc(String(s.city).replace(/^Basée à /i,''))+', Maroc':'')+'</span><span class="ftr-x"><button type="button" id="share-shop">Partager la boutique</button><button type="button" id="go-admin">Espace boutique</button></span></div></footer>';
 return h}
 function buildShell(){
@@ -1032,9 +1032,8 @@ function faqs(){var s=state.shop;return [
 ['Comment passer commande ?','Ajoutez vos pièces au panier puis touchez « Passer commande » : WhatsApp s’ouvre avec votre sélection. Nous vous confirmons la disponibilité, la taille et la livraison, puis votre commande est préparée.'],
 ['Où livrez-vous ?',(s.ship||'Livraison partout au Maroc')+'. Le délai et les frais de livraison vous sont confirmés sur WhatsApp au moment de la commande.'],
 ['Comment se passe le paiement ?','Le paiement se fait à la livraison, en toute simplicité.'],
-['Comment choisir ma taille ?','Consultez notre <a href="#aide/tailles">guide des tailles</a> ou écrivez-nous sur WhatsApp : nous vous conseillons volontiers.'],
 ['Puis-je échanger une pièce ?','Écrivez-nous sur WhatsApp dès réception de votre commande : nous étudions chaque demande avec attention pour trouver la meilleure solution.'],
-['Les pièces sont-elles en quantité limitée ?','Oui, la plupart de nos pièces existent en très peu d’exemplaires. Une pièce vendue reste visible sur la boutique avec la mention « Vendu ».']]}
+]}
 function accH(items,cls,openFirst){return '<div class="acc'+(cls?' '+cls:'')+'">'+items.map(function(q,i){return '<details'+(openFirst&&!i?' open':'')+'><summary>'+q[0]+'<i aria-hidden="true"></i></summary><div class="acc-b">'+(q[1].charAt(0)==='<'?q[1]:'<p>'+q[1]+'</p>')+'</div></details>'}).join('')+'</div>'}
 function homeH(){
 var s=state.shop,sc=shopCats(),hp=s.hero||heroPic(),h2=s.menuImg&&s.menuImg!==hp?s.menuImg:'',h='';
@@ -1094,7 +1093,7 @@ h+='<h1 class="pdp-t">'+esc(it.name)+'</h1><p class="pdp-p">'+(sold?'<s>'+dh(it.
 var tags=[];if(it.status==='derniere')tags.push('Dernière pièce');if(!sold&&newIt(it))tags.push('Nouveau');if(!sold&&promo(it))tags.push('−'+pct(it)+' %');if(res)tags.push('Réservé');
 if(tags.length)h+='<p class="pdp-tags">'+tags.map(function(t){return '<span>'+t+'</span>'}).join('')+'</p>';
 h+='</div><p class="pdp-d">'+esc(it.desc||defDesc(it))+'</p>';
-if(l.length)h+='<div class="opt"><div class="opt-h"><span>Taille<b id="sz-cur" style="font-weight:500">'+(pdpSize?' : '+esc(pdpSize):'')+'</b></span><a href="#aide/tailles">Guide des tailles</a></div><div class="sizes">'+l.map(function(z){return '<button type="button" class="size" data-act="size" data-v="'+esc(z)+'" aria-pressed="'+(pdpSize===z)+'">'+esc(z)+'</button>'}).join('')+'</div></div>';
+if(l.length)h+='<div class="opt"><div class="opt-h"><span>Taille<b id="sz-cur" style="font-weight:500">'+(pdpSize?' : '+esc(pdpSize):'')+'</b></span></div><div class="sizes">'+l.map(function(z){return '<button type="button" class="size" data-act="size" data-v="'+esc(z)+'" aria-pressed="'+(pdpSize===z)+'">'+esc(z)+'</button>'}).join('')+'</div></div>';
 h+='<div class="pdp-act"><button class="b-ink" type="button" id="pdp-atc" data-act="add" data-v="'+esc(it.id)+'"'+(sold||res||need?' disabled':'')+'>'+atcLabel(it,need)+'</button><button class="wish-b" type="button" data-act="wish" data-v="'+esc(it.id)+'" aria-pressed="'+inWish(it.id)+'" aria-label="Ajouter aux favoris">'+I.heart+'</button></div>';
 if(!sold&&!res)h+='<a class="wa-l" id="pdp-wa" href="'+esc(orderHref(it,pdpSize))+'" target="_blank" rel="noopener">'+WA_ICON+'<span>Commander directement sur WhatsApp</span></a>';
 else h+='<a class="wa-l" href="'+esc(waText('Bonjour '+nm()+', la pièce « '+it.name+' » n’est plus disponible. Pouvez-vous me prévenir d’un nouvel arrivage ou me proposer une pièce similaire ?'))+'" target="_blank" rel="noopener">'+WA_ICON+'<span>Être prévenue d’un nouvel arrivage</span></a>';
@@ -1143,7 +1142,6 @@ var sz='<div class="tbl-w"><table class="tbl"><thead><tr><th>Taille</th><th>FR</
 var secs=[['livraison','Livraison','<p>'+esc(s.ship||'Livraison partout au Maroc')+'. Une fois votre commande confirmée sur WhatsApp, nous vous indiquons le délai et les frais de livraison pour votre ville.</p>'],
 ['paiement','Paiement','<p>Le paiement se fait à la livraison. Vous réglez votre commande au moment où vous la recevez.</p>'],
 ['retours','Retours & échanges','<p>Une question sur votre pièce après réception ? Écrivez-nous sur WhatsApp dès que possible : nous étudions chaque demande avec attention pour trouver ensemble la meilleure solution.</p>'],
-['tailles','Guide des tailles',sz],
 ['faq','Questions fréquentes',accH(faqs())],
 ['contact','Contact','<p>Nous répondons personnellement à chaque message.</p><p><a class="b-ink" href="'+esc(chatHref())+'" target="_blank" rel="noopener">'+WA_ICON+'Écrire sur WhatsApp</a></p>']];
 var h='<section class="shop-h" style="margin-bottom:clamp(40px,6vw,80px)"><nav class="crumbs" aria-label="Fil d’Ariane"><a href="#">Accueil</a><span aria-hidden="true">/</span><span>Aide</span></nav><h1 class="h-page">Aide & <em>FAQ</em></h1><p class="lead c">Tout ce qu’il faut savoir pour commander sereinement.</p></section>';
