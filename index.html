@@ -1041,7 +1041,7 @@ var s=state.shop,sc=shopCats(),hp=s.hero||heroPic(),h2=s.menuImg&&s.menuImg!==hp
 h+='<section class="hero" aria-label="'+esc(nm())+'"><div class="hero-img"><div class="hero-par" id="hero-par">'+img(hp,'',{eager:1})+'</div></div><div class="hero-side"><div class="hero-txt"><p class="eyebrow">'+esc(s.heroTitle||'Nouvelle collection')+'</p><h1>'+heroLineH()+'</h1>'+(s.heroSub?'<p class="hero-sub">'+esc(s.heroSub)+'</p>':'')+'<a class="b-hero" href="#shop">Découvrir la collection</a></div>'+(h2?'<figure class="hero-img2">'+img(h2,'')+'</figure>':'')+'</div></section>';
 h+=reasH();
 var nw=state.items.filter(avail).sort(byNew).slice(0,8);
-if(nw.length)h+='<section class="sec">'+secHead('Nouveautés','Les dernières <em>arrivées</em>',['#nouveautes','Tout voir'])+'<div class="rail">'+nw.map(cardH).join('')+'</div></section>';
+if(nw.length)h+='<section class="sec">'+secHead('Nouveautés','Nouvelle <em>collection</em>',['#nouveautes','Tout voir'])+'<div class="rail">'+nw.map(cardH).join('')+'</div></section>';
 if(sc.length)h+='<section class="sec">'+secHead('Collections','L’univers <em>'+esc(nm())+'</em>',['#shop','Toute la boutique'])+colsH(sc)+'</section>';
 
 var ids=nw.map(function(x){return x.id}),sel=state.items.filter(function(x){return avail(x)&&ids.indexOf(x.id)<0}).slice(0,8);
