@@ -1010,7 +1010,7 @@ function lbH(){return '<div class="lb" id="mw-lb" role="dialog" aria-modal="true
 function ftrH(){
 var s=state.shop,sc=shopCats(),g=igH();
 function col(t,l){return '<div><h3>'+t+'</h3><ul>'+l.filter(Boolean).map(function(x){return '<li><a href="'+esc(x[0])+'"'+(x[2]?' target="_blank" rel="noopener"':'')+'>'+esc(x[1])+'</a></li>'}).join('')+'</ul></div>'}
-var h='<footer class="ftr"><div class="ftr-news rv"><p class="eyebrow">Newsletter</p><h2>Entrez dans l’univers <em>'+esc(nm())+'</em></h2><p class="lead c">Recevez nos nouveautés en avant-première et les pièces rares avant tout le monde.</p><form class="nl" id="mw-nl" novalidate><label class="sr" for="mw-email">Votre adresse e-mail</label><input id="mw-email" type="email" placeholder="Votre adresse e-mail" autocomplete="email"><button type="submit">S’inscrire</button></form><p class="nl-note">Votre inscription est confirmée par WhatsApp.</p></div>';
+var h='<footer class="ftr">';
 h+='<div class="ftr-cols"><div class="ftr-brand"><a class="brand" href="#"><img src="'+logoSrc()+'" alt="'+esc(nm())+'"></a><p>'+esc(s.city||'')+(s.city&&s.ship?'<br>':'')+esc(s.ship||'')+'</p><div class="ftr-soc">'+(g?'<a class="ico" href="'+esc(igUrl())+'" target="_blank" rel="noopener" aria-label="Instagram">'+I.ig+'</a>':'')+'<a class="ico" href="'+esc(chatHref())+'" target="_blank" rel="noopener" aria-label="WhatsApp">'+WA_ICON+'</a></div></div>';
 h+=col('Shop',[['#nouveautes','Nouveautés'],['#shop','Collections']].concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})));
 h+=col('Maison',[['#maison','À propos'],[chatHref(),'Contact',1],g?[igUrl(),'Instagram',1]:null,['#favoris','Favoris']]);
@@ -1032,7 +1032,7 @@ function faqs(){var s=state.shop;return [
 ['Comment passer commande ?','Ajoutez vos pièces au panier puis touchez « Passer commande » : WhatsApp s’ouvre avec votre sélection. Nous vous confirmons la disponibilité, la taille et la livraison, puis votre commande est préparée.'],
 ['Où livrez-vous ?',(s.ship||'Livraison partout au Maroc')+'. Le délai et les frais de livraison vous sont confirmés sur WhatsApp au moment de la commande.'],
 ['Comment se passe le paiement ?','Le paiement se fait à la livraison, en toute simplicité.'],
-['Puis-je échanger une pièce ?','Écrivez-nous sur WhatsApp dès réception de votre commande : nous étudions chaque demande avec attention pour trouver la meilleure solution.'],
+['Puis-je échanger une pièce ?','Nous ne faisons aucun échange ni remboursement. Toutes les commandes sont autorisées à être ouvertes à la réception.'],
 ]}
 function accH(items,cls,openFirst){return '<div class="acc'+(cls?' '+cls:'')+'">'+items.map(function(q,i){return '<details'+(openFirst&&!i?' open':'')+'><summary>'+q[0]+'<i aria-hidden="true"></i></summary><div class="acc-b">'+(q[1].charAt(0)==='<'?q[1]:'<p>'+q[1]+'</p>')+'</div></details>'}).join('')+'</div>'}
 function homeH(){
@@ -1042,8 +1042,7 @@ h+=reasH();
 var nw=state.items.filter(avail).sort(byNew).slice(0,8);
 if(nw.length)h+='<section class="sec">'+secHead('Nouveautés','Les dernières <em>arrivées</em>',['#nouveautes','Tout voir'])+'<div class="rail">'+nw.map(cardH).join('')+'</div></section>';
 if(sc.length)h+='<section class="sec">'+secHead('Collections','L’univers <em>'+esc(nm())+'</em>',['#shop','Toute la boutique'])+colsH(sc)+'</section>';
-var ep=s.phoneImg||s.menuImg||hp;
-h+='<section class="sec"><div class="edit"><figure class="edit-img rv">'+img(ep,'')+'</figure><div class="edit-txt rv"><p class="eyebrow">La Maison</p><h2 class="h2">Des pièces choisies, <em>une à une.</em></h2><p class="lead">'+esc(nm())+' sélectionne des pièces à l’allure intemporelle : belles matières, coupes justes, détails soignés. Peu de modèles, beaucoup d’attention.</p><a class="link" href="#maison">Découvrir la Maison</a></div></div></section>';
+
 var ids=nw.map(function(x){return x.id}),sel=state.items.filter(function(x){return avail(x)&&ids.indexOf(x.id)<0}).slice(0,8);
 if(sel.length<4)sel=state.items.filter(avail).slice(0,8);
 if(sel.length)h+='<section class="sec">'+secHead('La sélection','Pièces <em>du moment</em>',['#shop','Tout voir'])+'<div class="grid g8">'+sel.map(cardH).join('')+'</div><div class="more rv"><a class="b-line" href="#shop">Voir toute la boutique</a></div></section>';
@@ -1102,7 +1101,7 @@ h+=accH([
 ['Détails','<ul><li>Catégorie : '+esc(it.cat||'—')+'</li>'+(l.length?'<li>Tailles : '+esc(l.join(', '))+'</li>':'')+'<li>Référence : '+esc(String(it.id).toUpperCase())+'</li></ul>'],
 ['Composition & entretien','La composition exacte et les conseils d’entretien de cette pièce vous sont communiqués sur simple demande. Écrivez-nous sur WhatsApp, nous vous répondons avec plaisir.'],
 ['Livraison & paiement',esc(s.ship||'Livraison partout au Maroc')+'. Le délai et les frais vous sont confirmés sur WhatsApp au moment de la commande. Paiement à la livraison.'],
-['Retours & échanges','Une question sur votre pièce après réception ? Écrivez-nous sur WhatsApp : nous étudions chaque demande avec attention. <a href="#aide/retours">En savoir plus</a>']],'sm');
+['Retours & échanges','Nous ne faisons aucun échange ni remboursement. Toutes les commandes sont autorisées à être ouvertes à la réception. <a href="#aide/retours">En savoir plus</a>']],'sm');
 h+='</div></div>';
 var rel=relatedOf(it);
 if(rel.length)h+='<section class="sec">'+secHead('À découvrir','Vous aimerez <em>aussi</em>')+'<div class="rail">'+rel.map(cardH).join('')+'</div></section>';
@@ -1141,7 +1140,7 @@ function helpH(){var s=state.shop;
 var sz='<div class="tbl-w"><table class="tbl"><thead><tr><th>Taille</th><th>FR</th><th>Tour de poitrine</th><th>Tour de taille</th><th>Tour de hanches</th></tr></thead><tbody>'+[['XS','34','80–84','62–66','88–92'],['S','36','84–88','66–70','92–96'],['M','38','88–92','70–74','96–100'],['L','40','92–96','74–78','100–104'],['XL','42','96–100','78–82','104–108']].map(function(r){return '<tr>'+r.map(function(c,i){return i?'<td>'+c+'</td>':'<th scope="row">'+c+'</th>'}).join('')+'</tr>'}).join('')+'</tbody></table></div><p>Mesures du corps en centimètres, à titre indicatif. Entre deux tailles ? Écrivez-nous sur WhatsApp, nous vous conseillons selon la coupe de la pièce.</p>';
 var secs=[['livraison','Livraison','<p>'+esc(s.ship||'Livraison partout au Maroc')+'. Une fois votre commande confirmée sur WhatsApp, nous vous indiquons le délai et les frais de livraison pour votre ville.</p>'],
 ['paiement','Paiement','<p>Le paiement se fait à la livraison. Vous réglez votre commande au moment où vous la recevez.</p>'],
-['retours','Retours & échanges','<p>Une question sur votre pièce après réception ? Écrivez-nous sur WhatsApp dès que possible : nous étudions chaque demande avec attention pour trouver ensemble la meilleure solution.</p>'],
+['retours','Retours & échanges','<p>Nous ne faisons aucun échange ni remboursement. Toutes les commandes sont autorisées à être ouvertes à la réception.</p>'],
 ['faq','Questions fréquentes',accH(faqs())],
 ['contact','Contact','<p>Nous répondons personnellement à chaque message.</p><p><a class="b-ink" href="'+esc(chatHref())+'" target="_blank" rel="noopener">'+WA_ICON+'Écrire sur WhatsApp</a></p>']];
 var h='<section class="shop-h" style="margin-bottom:clamp(40px,6vw,80px)"><nav class="crumbs" aria-label="Fil d’Ariane"><a href="#">Accueil</a><span aria-hidden="true">/</span><span>Aide</span></nav><h1 class="h-page">Aide & <em>FAQ</em></h1><p class="lead c">Tout ce qu’il faut savoir pour commander sereinement.</p></section>';
