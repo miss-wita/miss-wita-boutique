@@ -1020,8 +1020,8 @@ function priceH(it){return '<span'+(promo(it)?' class="pp"':'')+'>'+dh(it.price)
 var PV=0;
 function cardP(it){PV=1;try{return cardH(it)}finally{PV=0}}
 function maxPct(l){return Math.max.apply(null,l.map(pct))}
-function promoBar(l){return '<a class="pbar" href="#promotion" aria-label="Voir les promotions"><span class="pbar-t">Promotion</span><span class="pbar-pct">Jusqu’à −'+maxPct(l)+' %</span><span class="pbar-go">Voir les promos</span></a>'}
-function promoSec(l){var n=l.length;return '<section class="sec promo-sec" id="promo"><div class="promo-head"><p class="promo-eye">Prix réduits</p><h2 class="promo-h2">Promotion</h2><p class="promo-sub">Jusqu’à <b>−'+maxPct(l)+' %</b> sur une sélection de pièces</p></div><div class="grid">'+l.slice(0,8).map(cardP).join('')+'</div><div class="promo-more"><a class="promo-all" href="#promotion">'+(n>8?'Voir les '+n+' promotions':'Voir toutes les promotions')+'</a></div></section>'}
+function promoBar(l){return '<a class="pbar" href="#promotion" aria-label="Voir les promotions"><span class="pbar-t">Promotion</span><span class="pbar-go">Voir les promos</span></a>'}
+function promoSec(l){var n=l.length;return '<section class="sec promo-sec" id="promo"><div class="promo-head"><p class="promo-eye">Prix réduits</p><h2 class="promo-h2">Promotion</h2><p class="promo-sub">Une sélection de pièces à prix réduit</p></div><div class="grid">'+l.slice(0,8).map(cardP).join('')+'</div><div class="promo-more"><a class="promo-all" href="#promotion">'+(n>8?'Voir les '+n+' promotions':'Voir toutes les promotions')+'</a></div></section>'}
 function cardH(it){
 var ps=photos(it),sold=it.status==='vendu',one=sizeList(it).length<=1,id=esc(it.id);
 var h='<article class="pc rv'+(sold?' is-sold':'')+'"><div class="pc-fig"><a class="pc-media" href="#'+id+'" aria-label="'+esc(it.name)+'">'+(ps.length?img(ps[0],it.name):'<span class="pc-empty">'+esc(nm())+'</span>')+(ps[1]&&!sold?img(ps[1],'',{cls:'alt'}):'')+badge(it)+'</a>';
