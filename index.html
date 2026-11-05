@@ -989,7 +989,9 @@ return h}
 function secHead(eb,title,link,center){return '<div class="sh rv'+(center?' c':'')+'"><div><p class="eyebrow">'+eb+'</p><h2 class="h2">'+title+'</h2></div>'+(link?'<a class="link" href="'+link[0]+'">'+link[1]+'</a>':'')+'</div>'}
 
 /* ---------- Structure ---------- */
-function navLinks(){var l=[['#nouveautes','Nouveautés'],['#shop','Collections']];shopCats().slice(0,4).forEach(function(c){l.push(['#shop/'+encodeURIComponent(c),plur(c)])});return l}
+function promoItems(){return state.items.filter(function(x){return avail(x)&&promo(x)})}
+function promoLinks(){return promoItems().length?[['#promotion','Promotion']]:[]}
+function navLinks(){var l=promoLinks().concat([['#nouveautes','Nouveautés'],['#shop','Collections']]);shopCats().slice(0,4).forEach(function(c){l.push(['#shop/'+encodeURIComponent(c),plur(c)])});return l}
 function annH(){var m=annMsgs();if(!m.length)return '';var one=m.map(function(x){return '<span>'+esc(x)+'</span>'}).join('');
 return '<div class="ann" role="note"><p class="sr">'+esc(m.join(' · '))+'</p><div class="ann-track" aria-hidden="true">'+one+one+one+one+'</div></div>'}
 function hdrH(){
@@ -998,7 +1000,7 @@ return '<header class="hdr" id="mw-hdr"><div class="hdr-row"><div class="hdr-l">
 '<div class="hdr-r"><a class="ico" href="#favoris" aria-label="Favoris">'+I.heart+'<span class="badge" id="wish-n" hidden></span></a><button class="ico" type="button" data-act="cart" aria-label="Ouvrir le panier">'+I.bag+'<span class="badge" id="cart-n" hidden></span></button></div></div>'+
 '<nav class="nav" aria-label="Navigation principale">'+navLinks().map(function(l){return '<a href="'+l[0]+'">'+esc(l[1])+'</a>'}).join('')+'</nav></header>'}
 function menuH(){
-var sc=shopCats(),links=[['#','Accueil'],['#nouveautes','Nouveautés'],['#shop','Collections']].concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})).concat([['#favoris','Favoris']]);
+var sc=shopCats(),links=[['#','Accueil']].concat(promoLinks()).concat([['#nouveautes','Nouveautés'],['#shop','Collections']]).concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})).concat([['#favoris','Favoris']]);
 var h='<div class="mnav" id="mw-menu" role="dialog" aria-modal="true" aria-label="Menu"><div class="mnav-top"><button class="ico" type="button" data-act="close" aria-label="Fermer le menu">'+I.close+'</button><a class="brand" href="#"><img src="'+logoSrc()+'" alt="'+esc(nm())+'"></a><span></span></div>';
 h+='<nav class="mnav-links">'+links.map(function(l,i){return '<a href="'+l[0]+'" style="transition-delay:'+(150+i*55)+'ms">'+esc(l[1])+'<small>'+(i<9?'0':'')+(i+1)+'</small></a>'}).join('')+'</nav>';
 var cs=sc.slice(0,3).filter(function(c){return catPic(c)});
@@ -1013,7 +1015,7 @@ var s=state.shop,sc=shopCats(),g=igH();
 function col(t,l){return '<div><h3>'+t+'</h3><ul>'+l.filter(Boolean).map(function(x){return '<li><a href="'+esc(x[0])+'"'+(x[2]?' target="_blank" rel="noopener"':'')+'>'+esc(x[1])+'</a></li>'}).join('')+'</ul></div>'}
 var h='<footer class="ftr">';
 h+='<div class="ftr-cols"><div class="ftr-brand"><a class="brand" href="#"><img src="'+logoSrc()+'" alt="'+esc(nm())+'"></a><p>'+esc(s.city||'')+(s.city&&s.ship?'<br>':'')+esc(s.ship||'')+'<br>Livraison à Tanger en moins de 24h</p><div class="ftr-soc">'+(g?'<a class="ico" href="'+esc(igUrl())+'" target="_blank" rel="noopener" aria-label="Instagram">'+I.ig+'</a>':'')+'<a class="ico" href="'+esc(chatHref())+'" target="_blank" rel="noopener" aria-label="WhatsApp">'+WA_ICON+'</a></div></div>';
-h+=col('Shop',[['#nouveautes','Nouveautés'],['#shop','Collections']].concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})));
+h+=col('Shop',promoLinks().concat([['#nouveautes','Nouveautés'],['#shop','Collections']]).concat(sc.map(function(c){return ['#shop/'+encodeURIComponent(c),plur(c)]})));
 h+=col('Maison',[[chatHref(),'Contact',1],g?[igUrl(),'Instagram',1]:null,['#favoris','Favoris']]);
 h+=col('Aide',[['#aide/livraison','Livraison'],['#aide/retours','Retours & échanges'],['#aide/faq','FAQ'],['#aide/cgv','Conditions générales de vente'],['#aide/confidentialite','Politique de confidentialité']]);
 h+='</div><div class="ftr-bottom"><span>© '+new Date().getFullYear()+' '+esc(nm())+(s.city?' · Tanger, Maroc':'')+'</span><span class="ftr-x"><button type="button" id="share-shop">Partager la boutique</button><button type="button" id="go-admin">Espace boutique</button></span></div></footer>';
@@ -1039,14 +1041,10 @@ function accH(items,cls,openFirst){return '<div class="acc'+(cls?' '+cls:'')+'">
 function homeH(){
 var s=state.shop,sc=shopCats(),hp=s.hero||heroPic(),h2=s.menuImg&&s.menuImg!==hp?s.menuImg:'',h='';
 h+='<section class="hero" aria-label="'+esc(nm())+'"><div class="hero-img"><div class="hero-par" id="hero-par">'+img(hp,'',{eager:1})+'</div></div><div class="hero-side"><div class="hero-txt"><p class="eyebrow">'+esc(s.heroTitle||'Nouvelle collection')+'</p><h1>'+heroLineH()+'</h1>'+(s.heroSub?'<p class="hero-sub">'+esc(s.heroSub)+'</p>':'')+'<a class="b-hero" href="#shop">Découvrir la collection</a></div>'+(h2?'<figure class="hero-img2">'+img(h2,'')+'</figure>':'')+'</div></section>';
+var pr=promoItems().sort(byNew);
+if(pr.length)h+='<section class="sec" id="promo">'+secHead('Promotion','Nos <em>promotions</em>',['#promotion','Tout voir'])+'<div class="rail">'+pr.slice(0,8).map(cardH).join('')+'</div></section>';
 h+=reasH();
-var nw=state.items.filter(avail).sort(byNew).slice(0,8);
-if(nw.length)h+='<section class="sec">'+secHead('Nouveautés','Nouvelle <em>collection</em>',['#nouveautes','Tout voir'])+'<div class="rail">'+nw.map(cardH).join('')+'</div></section>';
-if(sc.length)h+='<section class="sec">'+secHead('Collections','L’univers <em>'+esc(nm())+'</em>',['#shop','Toute la boutique'])+colsH(sc)+'</section>';
-
-var ids=nw.map(function(x){return x.id}),sel=state.items.filter(function(x){return avail(x)&&ids.indexOf(x.id)<0}).slice(0,8);
-if(sel.length<4)sel=state.items.filter(avail).slice(0,8);
-if(sel.length)h+='<section class="sec">'+secHead('La sélection','Pièces <em>du moment</em>',['#shop','Tout voir'])+'<div class="grid g8">'+sel.map(cardH).join('')+'</div><div class="more rv"><a class="b-line" href="#shop">Voir toute la boutique</a></div></section>';
+sc.forEach(function(c){var l=catItems(c).filter(avail).sort(byNew);if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
 h+=vidsH();
 if(igH())h+='<section class="sec"><div class="igb rv"><p class="eyebrow">Instagram</p><a class="igb-h" href="'+esc(igUrl())+'" target="_blank" rel="noopener">@'+esc(igH())+'</a><p class="lead c">Les nouveautés en avant-première et l’univers de la Maison, au quotidien.</p><a class="link" href="'+esc(igUrl())+'" target="_blank" rel="noopener">Nous suivre</a></div></section>';
 h+='<section class="sec"><div class="faq">'+secHead('Questions fréquentes','Nous sommes <em>là pour vous</em>',null,true)+'<div class="rv">'+accH(faqs().slice(0,5))+'</div><div class="more rv" style="margin-top:40px"><a class="link" href="#aide">Toutes les réponses</a></div></div></section>';
@@ -1056,6 +1054,7 @@ function vidsH(){var vs=state.shop.videos||[];if(!vs.length)return '';return '<s
 function shopList(r){
 var l=state.items.filter(function(x){return !r.c||x.cat===r.c});
 if(r.nw)l=l.filter(avail).sort(byNew).slice(0,12);
+if(r.promo)l=l.filter(function(x){return avail(x)&&promo(x)}).sort(byNew);
 if(shopAvail)l=l.filter(avail);
 if(shopSort==='asc')l=l.slice().sort(function(a,b){return a.price-b.price});
 else if(shopSort==='desc')l=l.slice().sort(function(a,b){return b.price-a.price});
@@ -1063,10 +1062,10 @@ else if(shopSort==='new')l=l.slice().sort(byNew);
 else if(!r.nw)l=sortSel(l);
 return l}
 function shopH(r){
-var sc=shopCats(),l=shopList(r),n=l.length,t=r.nw?'Nouveautés':r.c?plur(r.c):'Collections';
-var intro=r.nw?'Les dernières pièces arrivées à la Maison.':r.c?'':'Toutes les pièces de la Maison, en quantités limitées.';
-var h='<section class="shop-h"><nav class="crumbs" aria-label="Fil d’Ariane"><a href="#">Accueil</a><span aria-hidden="true">/</span>'+(r.c||r.nw?'<a href="#shop">Boutique</a><span aria-hidden="true">/</span>':'')+'<span>'+esc(t)+'</span></nav><h1 class="h-page">'+esc(t)+'</h1>'+(intro?'<p class="lead c">'+intro+'</p>':'')+'</section>';
-h+='<nav class="cats" aria-label="Catégories"><a href="#shop"'+(!r.c&&!r.nw?' aria-current="page"':'')+'>Tout voir</a><a href="#nouveautes"'+(r.nw?' aria-current="page"':'')+'>Nouveautés</a>'+sc.map(function(c){return '<a href="#shop/'+encodeURIComponent(c)+'"'+(r.c===c?' aria-current="page"':'')+'>'+esc(plur(c))+'</a>'}).join('')+'</nav>';
+var sc=shopCats(),l=shopList(r),n=l.length,t=r.promo?'Promotion':r.nw?'Nouveautés':r.c?plur(r.c):'Collections';
+var intro=r.promo?'Nos pièces à prix réduit, en quantités limitées.':r.nw?'Les dernières pièces arrivées à la Maison.':r.c?'':'Toutes les pièces de la Maison, en quantités limitées.';
+var h='<section class="shop-h"><nav class="crumbs" aria-label="Fil d’Ariane"><a href="#">Accueil</a><span aria-hidden="true">/</span>'+(r.c||r.nw||r.promo?'<a href="#shop">Boutique</a><span aria-hidden="true">/</span>':'')+'<span>'+esc(t)+'</span></nav><h1 class="h-page">'+esc(t)+'</h1>'+(intro?'<p class="lead c">'+intro+'</p>':'')+'</section>';
+h+='<nav class="cats" aria-label="Catégories"><a href="#shop"'+(!r.c&&!r.nw&&!r.promo?' aria-current="page"':'')+'>Tout voir</a>'+(promoItems().length?'<a href="#promotion"'+(r.promo?' aria-current="page"':'')+'>Promotion</a>':'')+'<a href="#nouveautes"'+(r.nw?' aria-current="page"':'')+'>Nouveautés</a>'+sc.map(function(c){return '<a href="#shop/'+encodeURIComponent(c)+'"'+(r.c===c?' aria-current="page"':'')+'>'+esc(plur(c))+'</a>'}).join('')+'</nav>';
 h+='<div class="tools"><label class="tgl"><input type="checkbox" id="mw-avail"'+(shopAvail?' checked':'')+'><span></span>Disponibles</label><span class="tools-n">'+n+' pièce'+(n>1?'s':'')+'</span><label class="sel"><span class="sr">Trier par</span><select id="mw-sort">'+[['sel','Sélection'],['new','Nouveautés'],['asc','Prix croissant'],['desc','Prix décroissant']].map(function(o){return '<option value="'+o[0]+'"'+(shopSort===o[0]?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label></div>';
 if(!n)return h+'<div class="empty-st"><p class="h3s">Nouvel arrivage en préparation</p><p class="lead c">Revenez très vite : les nouveautés arrivent.</p><a class="b-line" href="#shop">Voir toute la boutique</a></div>';
 h+='<div class="sec-in"><div class="grid" id="mw-grid">'+l.slice(0,shopShown).map(cardH).join('')+'</div>';
@@ -1148,13 +1147,14 @@ if(!h)return {p:'home'};
 if(h==='shop'||h==='boutique')return {p:'shop',c:''};
 if(h.indexOf('shop/')===0){var c=h.slice(5);return {p:'shop',c:shopCats().indexOf(c)>=0?c:''}}
 if(h==='nouveautes')return {p:'shop',c:'',nw:true};
+if(h==='promotion')return {p:'shop',c:'',promo:true};
 if(h==='maison'||h==='a-propos')return {p:'home'};
 if(h.indexOf('aide')===0)return {p:'help',s:h.split('/')[1]||''};
 if(h==='favoris')return {p:'wish'};
 if(itemById(h))return {p:'product',id:h};
 return {p:'home'}}
 function routeKey(){return location.hash&&location.hash!=='#'?location.hash:'#'}
-function setTitle(r){var t='';if(r.p==='product'){var it=itemById(r.id);t=it?it.name:''}else if(r.p==='shop')t=r.nw?'Nouveautés':r.c?plur(r.c):'Collections';else if(r.p==='about')t='La Maison';else if(r.p==='help')t='Aide & FAQ';else if(r.p==='wish')t='Favoris';
+function setTitle(r){var t='';if(r.p==='product'){var it=itemById(r.id);t=it?it.name:''}else if(r.p==='shop')t=r.promo?'Promotion':r.nw?'Nouveautés':r.c?plur(r.c):'Collections';else if(r.p==='about')t='La Maison';else if(r.p==='help')t='Aide & FAQ';else if(r.p==='wish')t='Favoris';
 document.title=t?t+' — '+nm():nm()+' — Boutique en ligne'}
 function renderRoute(){
 var v=document.getElementById('mw-view');if(!v)return;
@@ -1167,7 +1167,7 @@ v.innerHTML=h;
 if(changed&&!REDUCE){v.classList.remove('pg-in');void v.offsetWidth;v.classList.add('pg-in')}
 document.body.setAttribute('data-page',r.p);
 setTitle(r);
-var cur=r.p==='shop'?(r.nw?'#nouveautes':r.c?'#shop/'+encodeURIComponent(r.c):'#shop'):r.p==='about'?'#maison':r.p==='wish'?'#favoris':r.p==='home'?'#':'';
+var cur=r.p==='shop'?(r.promo?'#promotion':r.nw?'#nouveautes':r.c?'#shop/'+encodeURIComponent(r.c):'#shop'):r.p==='about'?'#maison':r.p==='wish'?'#favoris':r.p==='home'?'#':'';
 [].forEach.call(document.querySelectorAll('.nav a,.mnav-links a'),function(a){if(a.getAttribute('href')===cur)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
 if(r.p==='product')trackSeen(r.id);
 MW.key=k;
