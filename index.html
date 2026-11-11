@@ -1000,7 +1000,7 @@ var MW={push:false,scroll:{},key:null,lastY:0,io:null,stickyIO:null,hero:null,ra
 function jget(k,d){try{var v=localStorage.getItem(k);var p=v?JSON.parse(v):d;return Array.isArray(d)&&!Array.isArray(p)?d:p}catch(e){return d}}
 function jset(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 var cart=jget('mw-cart',[]),wish=jget('mw-wish',[]),seen=jget('mw-seen',[]);
-var pdpSize=null,pdpColor=null,shopSort='sel',shopAvail=true,SHOP_PAGE=12,shopShown=12;
+var pdpSize=null,pdpColor=null,shopSort='sel',shopAvail=false,SHOP_PAGE=12,shopShown=12;
 var REDUCE=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}
 
@@ -1059,7 +1059,7 @@ function cardP(it){PV=1;try{return cardH(it)}finally{PV=0}}
 function maxPct(l){return Math.max.apply(null,l.map(pct))}
 function promoBar(l){return '<a class="pbar" href="#promotion" aria-label="Voir les promotions"><span class="pbar-t">Promotion</span><span class="pbar-go">Voir les promos</span></a>'}
 function promoSec(l){var n=l.length;return '<section class="sec promo-sec" id="promo"><div class="promo-head"><h2 class="promo-h2">Promotion</h2><a class="promo-all" href="#promotion">'+(n>1?'Voir les '+n+' promos':'Voir la promo')+'</a></div><div class="rail">'+l.slice(0,8).map(cardP).join('')+'</div></section>'}
-function allBtn(){var n=state.items.filter(avail).length;return '<section class="sec all-sec"><a class="all-btn" href="#shop">Voir tous les articles<span>'+n+' pièce'+(n>1?'s':'')+' disponible'+(n>1?'s':'')+'</span></a></section>'}
+function allBtn(){var t=state.items.length,n=state.items.filter(avail).length;return '<section class="sec all-sec"><a class="all-btn" href="#shop">Voir tous les articles<span>'+t+' pièces · '+n+' disponible'+(n>1?'s':'')+'</span></a></section>'}
 function cardH(it){
 var ps=photos(it),sold=it.status==='vendu',one=sizeList(it).length<=1&&colOk(it).length<=1,id=esc(it.id);
 var h='<article class="pc rv'+(sold?' is-sold':'')+'"><div class="pc-fig"><a class="pc-media" href="#'+id+'" aria-label="'+esc(it.name)+'">'+(ps.length?img(ps[0],it.name):'<span class="pc-empty">'+esc(nm())+'</span>')+(ps[1]&&!sold?img(ps[1],'',{cls:'alt'}):'')+badge(it)+'</a>';
@@ -1147,7 +1147,7 @@ else if(!r.nw)l=sortSel(l);
 return l}
 function shopH(r){
 var sc=shopCats(),l=shopList(r),n=l.length,t=r.promo?'Promotion':r.nw?'Nouveautés':r.c?plur(r.c):'Tous les articles';
-var intro=r.promo?'Nos pièces à prix réduit, en quantités limitées.':r.nw?'Les dernières pièces arrivées à la Maison.':r.c?'':'Toutes les pièces disponibles, en quantités limitées.';
+var intro=r.promo?'Nos pièces à prix réduit, en quantités limitées.':r.nw?'Les dernières pièces arrivées à la Maison.':r.c?'':'Toutes les pièces de la Maison : celles encore disponibles et celles déjà vendues.';
 var h='<section class="shop-h'+(r.promo?' promo-h':'')+'"><nav class="crumbs" aria-label="Fil d’Ariane"><a href="#">Accueil</a><span aria-hidden="true">/</span>'+(r.c||r.nw||r.promo?'<a href="#shop">Boutique</a><span aria-hidden="true">/</span>':'')+'<span>'+esc(t)+'</span></nav><h1 class="h-page">'+esc(t)+'</h1>'+(intro?'<p class="lead c">'+intro+'</p>':'')+'</section>';
 h+='<nav class="cats" aria-label="Catégories"><a href="#shop"'+(!r.c&&!r.nw&&!r.promo?' aria-current="page"':'')+'>Tous les articles</a>'+(promoItems().length?'<a href="#promotion"'+(r.promo?' aria-current="page"':'')+'>Promotion</a>':'')+'<a href="#nouveautes"'+(r.nw?' aria-current="page"':'')+'>Nouveautés</a>'+sc.map(function(c){return '<a href="#shop/'+encodeURIComponent(c)+'"'+(r.c===c?' aria-current="page"':'')+'>'+esc(plur(c))+'</a>'}).join('')+'</nav>';
 h+='<div class="tools"><label class="tgl"><input type="checkbox" id="mw-avail"'+(shopAvail?' checked':'')+'><span></span>Disponibles</label><span class="tools-n">'+n+' pièce'+(n>1?'s':'')+'</span><label class="sel"><span class="sr">Trier par</span><select id="mw-sort">'+[['sel','Sélection'],['new','Nouveautés'],['asc','Prix croissant'],['desc','Prix décroissant']].map(function(o){return '<option value="'+o[0]+'"'+(shopSort===o[0]?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label></div>';
