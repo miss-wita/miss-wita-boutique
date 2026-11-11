@@ -1037,7 +1037,7 @@ function newIt(it){return it.newTag!=='non'&&(it.newTag==='oui'||isNew(it))}
 function promo(it){return it.oldPrice&&it.oldPrice>it.price}
 function pct(it){return Math.round((1-it.price/it.oldPrice)*100)}
 function byNew(a,b){return String(b.added||'').localeCompare(String(a.added||''))}
-function sortSel(l){return l}
+function sortSel(l){var idx=[];l.forEach(function(x,i){if(x.cat==='Pull')idx.push(i)});if(idx.length<2)return l;var pl=idx.map(function(i){return l[i]}),o=pl.filter(function(x){return !promo(x)}).concat(pl.filter(promo)),out=l.slice();idx.forEach(function(i,k){out[i]=o[k]});return out}
 function inWish(id){return wish.indexOf(id)>=0}
 function waText(msg){var d=phoneDigits();return d?'https://wa.me/'+d+'?text='+encodeURIComponent(msg):state.shop.wa}
 function img(src,alt,o){o=o||{};if(!src)return '';return '<img src="'+u(src)+'" alt="'+esc(alt||'')+'"'+(o.cls?' class="'+o.cls+'"':'')+(o.eager?' fetchpriority="high"':' loading="lazy"')+' decoding="async">'}
@@ -1127,7 +1127,7 @@ var pr=promoItems().sort(byNew);
 if(pr.length)h+=promoSec(pr);
 h+=allBtn();
 h+=reasH();
-sc.forEach(function(c){var l=catItems(c).filter(avail).sort(byNew);if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
+sc.forEach(function(c){var l=catItems(c).filter(avail).sort(byNew);if(c==='Pull')l=sortSel(l);if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
 h+=allBtn();
 h+=vidsH();
 if(igH())h+='<section class="sec"><div class="igb rv"><p class="eyebrow">Instagram</p><a class="igb-h" href="'+esc(igUrl())+'" target="_blank" rel="noopener">@'+esc(igH())+'</a><p class="lead c">Les nouveautés en avant-première et l’univers de la Maison, au quotidien.</p><a class="link" href="'+esc(igUrl())+'" target="_blank" rel="noopener">Nous suivre</a></div></section>';
