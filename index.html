@@ -1121,10 +1121,7 @@ function faqs(){var s=state.shop;return [
 function accH(items,cls,openFirst){return '<div class="acc'+(cls?' '+cls:'')+'">'+items.map(function(q,i){return '<details'+(openFirst&&!i?' open':'')+'><summary>'+q[0]+'<i aria-hidden="true"></i></summary><div class="acc-b">'+(q[1].charAt(0)==='<'?q[1]:'<p>'+q[1]+'</p>')+'</div></details>'}).join('')+'</div>'}
 function homeH(){
 var s=state.shop,sc=shopCats(),hp=s.hero||heroPic(),h2=s.menuImg&&s.menuImg!==hp?s.menuImg:'',h='';
-if(promoItems().length)h+=promoBar(promoItems());
 h+='<section class="hero" aria-label="'+esc(nm())+'"><div class="hero-img"><div class="hero-par" id="hero-par">'+img(hp,'',{eager:1})+'</div></div><div class="hero-side"><div class="hero-txt"><p class="eyebrow">'+esc(s.heroTitle||'Nouvelle collection')+'</p><h1>'+heroLineH()+'</h1>'+(s.heroSub?'<p class="hero-sub">'+esc(s.heroSub)+'</p>':'')+'<a class="b-hero" href="#shop">Découvrir la collection</a></div>'+(h2?'<figure class="hero-img2">'+img(h2,'')+'</figure>':'')+'</div></section>';
-var pr=promoItems().sort(byNew);
-if(pr.length)h+=promoSec(pr);
 h+=allBtn();
 h+=reasH();
 sc.forEach(function(c){var l=catItems(c).filter(avail).sort(byNew);if(c==='Pull')l=sortSel(l);if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
