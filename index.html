@@ -1124,7 +1124,7 @@ var s=state.shop,sc=shopCats(),hp=s.hero||heroPic(),h2=s.menuImg&&s.menuImg!==hp
 h+='<section class="hero" aria-label="'+esc(nm())+'"><div class="hero-img"><div class="hero-par" id="hero-par">'+img(hp,'',{eager:1})+'</div></div><div class="hero-side"><div class="hero-txt"><h1>'+heroLineH()+'</h1>'+(s.heroSub?'<p class="hero-sub">'+esc(s.heroSub)+'</p>':'')+'<a class="b-hero" href="#shop">Découvrir la collection Miss Wita</a></div>'+(h2?'<figure class="hero-img2">'+img(h2,'')+'</figure>':'')+'</div></section>';
 h+=allBtn();
 h+=reasH();
-sc.forEach(function(c){var l=catItems(c).filter(avail).sort(byNew);if(c==='Pull')l=sortSel(l);if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
+sc.forEach(function(c){var l=catItems(c).sort(byNew);if(c==='Pull')l=sortSel(l);l=l.filter(avail).concat(l.filter(function(x){return !avail(x)}));if(!l.length)return;h+='<section class="sec">'+secHead(l.length+' pièce'+(l.length>1?'s':''),esc(plur(c)),['#shop/'+encodeURIComponent(c),'Tout voir'])+'<div class="rail">'+l.slice(0,8).map(cardH).join('')+'</div></section>'});
 var pr=promoItems().sort(byNew);
 if(pr.length)h+=promoSec(pr);
 h+=allBtn();
